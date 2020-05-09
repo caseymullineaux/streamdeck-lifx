@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>LIFX Color Settings</title>
+    <link rel="stylesheet" href="sdpi.css" />
+    <script src="sdtools.common.js"></script>
+    <script src="SetColorRGB.js"></script>
+  </head>
+  <body>
+    <div class="sdpi-wrapper">
+      <div class="sdpi-item" id="dvAuthToken">
+        <div class="sdpi-item-label">Authentication Token</div>
+        <input
+          class="sdpi-item-value sdProperty"
+          placeholder=""
+          value=""
+          id="authToken"
+          oninput="setSettings()"
+          required
+        />
+      </div>
+      <div class="sdpi-item" id="dvSelector">
+        <div class="sdpi-item-label">Selector</div>
+        <input
+          class="sdpi-item-value sdProperty"
+          placeholder=""
+          value=""
+          id="selector"
+          oninput="setSettings()"
+          required
+        />
+      </div>
+    </div>
+    <div class="sdpi-wrapper">
+      <div class="sdpi-item" id="dvRed">
+        <div class="sdpi-item-label">Red</div>
+        <input
+          class="sdpi-item-value sdProperty"
+          type="number"
+          min="0"
+          max="255"
+          placeholder="[0-255]"
+          value="255"
+          id="red"
+          oninput="setSettings()"
+        />
+      </div>
+      <div class="sdpi-item" id="dvGreen">
+        <div class="sdpi-item-label">Green</div>
+        <input
+          class="sdpi-item-value sdProperty"
+          type="number"
+          min="0"
+          max="255"
+          placeholder="[0-255]"
+          value="255"
+          id="green"
+          oninput="setSettings()"
+        />
+      </div>
+      <div class="sdpi-item" id="dvBlue">
+        <div class="sdpi-item-label">Blue</div>
+        <input
+          class="sdpi-item-value sdProperty"
+          type="number"
+          min="0"
+          max="255"
+          placeholder="[0-255]"
+          value="255"
+          id="blue"
+          oninput="setSettings()"
+        />
+      </div>
+    </div>
+    <div type="range" class="sdpi-item" id="dvBrightness">
+      <div class="sdpi-item-label" id="brightnessTitle">Brightness</div>
+      <div class="sdpi-item-value">
+        <span class="clickable" value="0">0</span>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          step="5"
+          value="100"
+          list="brightnessValues"
+          class="sdProperty"
+          id="brightness"
+          oninput="setSettings()"
+        />
+        <span class="clickable" value="100">100</span>
+        <datalist id="brigntnessValues">
+          <option>100</option>
+        </datalist>
+      </div>
+    </div>
+
+    <div class="sdpi-item" id="dvDuration">
+      <div class="sdpi-item-label">Duration (sec)</div>
+      <input
+        class="sdpi-item-value sdProperty"
+        type="number"
+        min="0"
+        max="3155760000"
+        placeholder="[0-3155760000] (100 years) - Default:0"
+        value="0"
+        id="duration"
+        oninput="setSettings()"
+      />
+    </div>
+  </body>
+</html>

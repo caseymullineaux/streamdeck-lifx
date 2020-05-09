@@ -1,0 +1,158 @@
+{
+  "Actions": [
+    {
+      "Icon": "Images/actionImages/actionImage-power",
+      "Name": "On/Off",
+      "States": [
+        {
+          "Image": "Images/keyImages/power",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Turn light on/off",
+      "UUID": "au.com.mullineaux.lifx.powertoggle",
+      "PropertyInspectorPath": "PropertyInspector/TogglePower.html"
+    },
+    {
+      "Icon": "Images/actionImages/actionImage-color",
+      "Name": "Color (Preset)",
+      "States": [
+        {
+          "Image": "Images/keyImages/color-preset",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Set color using a preset",
+      "UUID": "au.com.mullineaux.lifx.setcolor",
+      "PropertyInspectorPath": "PropertyInspector/SetColor.html"
+    },
+    {
+      "Icon": "Images/actionImages/actionImage-color",
+      "Name": "Color (RGB)",
+      "States": [
+        {
+          "Image": "Images/keyImages/color-rgb",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Set color by defining RGB values",
+      "UUID": "au.com.mullineaux.lifx.setcolorrgb",
+      "PropertyInspectorPath": "PropertyInspector/SetColorRGB.html"
+    },
+    {
+      "Icon": "Images/actionImages/actionImage-brightness",
+      "Name": "Brightness",
+      "States": [
+        {
+          "Image": "Images/keyImages/brightness",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Set brightness",
+      "UUID": "au.com.mullineaux.lifx.setbrightness",
+      "PropertyInspectorPath": "PropertyInspector/SetBrightness.html"
+    },
+    {
+      "Icon": "Images/actionImages/actionImage-increaseBrightness",
+      "Name": "Brightness Up (Hold)",
+      "States": [
+        {
+          "Image": "Images/keyImages/brightnessUp",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Increases brightness",
+      "UUID": "au.com.mullineaux.lifx.increasebrightness",
+      "PropertyInspectorPath": "PropertyInspector/IncreaseBrightness.html"
+    },
+    {
+      "Icon": "Images/actionImages/actionImage-increaseBrightness",
+      "Name": "Brightness Down (Hold)",
+      "States": [
+        {
+          "Image": "Images/keyImages/brightnessDown",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Decreases brightness",
+      "UUID": "au.com.mullineaux.lifx.decreasebrightness",
+      "PropertyInspectorPath": "PropertyInspector/DecreaseBrightness.html"
+    },
+    {
+      "Icon": "Images/actionImages/actionImage-effect",
+      "Name": "Effect: Breathe",
+      "States": [
+        {
+          "Image": "Images/keyImages/effect",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Apply the \"Breathe\" effect",
+      "UUID": "au.com.mullineaux.lifx.effectbreathe",
+      "PropertyInspectorPath": "PropertyInspector/EffectBreathe.html"
+    },
+    {
+      "Icon": "Images/actionImages/actionImage-effect",
+      "Name": "Effects: Move",
+      "States": [
+        {
+          "Image": "Images/keyImages/effect",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Apply the \"Move\" effect (tiles only)",
+      "UUID": "au.com.mullineaux.lifx.effectmove",
+      "PropertyInspectorPath": "PropertyInspector/EffectMove.html"
+    },
+    {
+      "Icon": "Images/actionImages/actionImage-effect",
+      "Name": "Effect: Pulse",
+      "States": [
+        {
+          "Image": "Images/keyImages/effect",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Apply the \"Pulse\" effect",
+      "UUID": "au.com.mullineaux.lifx.effectpulse",
+      "PropertyInspectorPath": "PropertyInspector/EffectPulse.html"
+    }
+  ],
+  "Author": "Casey Mullineaux",
+  "Description": "Control LIFX lights.",
+  "Name": "LIFX",
+  "Icon": "Images/pluginIcon",
+  "URL": "https://github.com/caseymullineaux/streamdeck-lifx",
+  "Version": "0.1",
+  "CodePath": "au.com.mullineaux.lifx",
+  "Category": "LIFX",
+  "CategoryIcon": "Images/categoryIcon",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "4.4.1"
+  }
+}
