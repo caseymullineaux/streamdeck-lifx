@@ -35,7 +35,7 @@ A LIFX plugin for the Streamdeck
 
 * Change the `Color (preset)` category icon
 * Change the `Brightness Up` category icon
-* Add more information
+* Add more informational text to each of the actions
 
 ## Suggestions
 
