@@ -34,7 +34,7 @@ steps:
     script: |
       $DistTool = $(Build.SourcesDirectory)\utils\DistributionTool.exe
       $ReleaseDir = $(Build.SourcesDirectory)\src\bin\Release\au.com.mullineaux.lifx.sdPlugin
-      & $env:compsec "/c $DistTool --build --input  $ReleaseDir --output $(Build.ArtifactStagingDirectory)"
+      & $env:comspec "/c $DistTool --build --input  $ReleaseDir --output $(Build.ArtifactStagingDirectory)"
 
 - task: PublishBuildArtifacts@1
   displayName: Publish artifact
