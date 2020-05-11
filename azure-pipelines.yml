@@ -39,7 +39,7 @@ steps:
 - task: CmdLine@2
   displayName: create plugin installer
   inputs:
-    script: '$(Build.SourcesDirectory)\utils\DistributionTool.exe --build --input $(Build.SourcesDirectory)\src\bin\Release\au.com.mullineaux.lifx.sdPlugin --output $(Build.ArtifactStagingDirctory)'
+    script: '$(Build.SourcesDirectory)\utils\DistributionTool.exe --build --input $(Build.SourcesDirectory)\src\bin\Release\au.com.mullineaux.lifx.sdPlugin --output $(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   displayName: Publish artifact
   inputs:
