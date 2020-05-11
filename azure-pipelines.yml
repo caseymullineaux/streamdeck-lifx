@@ -27,7 +27,29 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-# - task: VSTest@2
+- task: PowerShell@2
+  displayName: build plugin installer
+  inputs:
+    targetType: 'inline'
+    script: |
+      $DistTool = $(Build.SourcesDirectory)\utils\DistributionTool.exe
+      $ReleaseDir = $(Build.SourcesDirectory)\src\bin\Release\au.com.mullineaux.lifx.sdPlugin
+      & $env:compsec "/c $DistTool --build --input  $ReleaseDir --output $(Build.ArtifactStagingDirectory)"
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish artifact
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'release'
+    publishLocation: 'Container'
+
+# - task: GitHubRelease@1
+#   displayName: Create Github Release
 #   inputs:
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
+#     gitHubConnection: 'github.com/caseymullineaux'
+#     repositoryName: '$(Build.Repository.Name)'
+#     action: 'create'
+#     target: '$(Build.SourceVersion)'
+#     tagSource: 'gitTag'
+#     changeLogCompareToRelease: 'lastFullRelease'
+#     changeLogType: 'commitBased'
