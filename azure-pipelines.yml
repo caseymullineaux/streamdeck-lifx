@@ -27,15 +27,19 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: PowerShell@2
-  displayName: build plugin installer
-  inputs:
-    targetType: 'inline'
-    script: |
-      $DistTool = $(Build.SourcesDirectory)\utils\DistributionTool.exe
-      $ReleaseDir = $(Build.SourcesDirectory)\src\bin\Release\au.com.mullineaux.lifx.sdPlugin
-      & $env:comspec "/c $DistTool --build --input  $ReleaseDir --output $(Build.ArtifactStagingDirectory)"
+# - task: PowerShell@2
+#   displayName: build plugin installer
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       $DistTool = $(Build.SourcesDirectory)\utils\DistributionTool.exe
+#       $ReleaseDir = $(Build.SourcesDirectory)\src\bin\Release\au.com.mullineaux.lifx.sdPlugin
+#       & $env:comspec "/c $DistTool --build --input  $ReleaseDir --output $(Build.ArtifactStagingDirectory)"
 
+- task: CmdLine@2
+  displayName: create plugin installer
+  inputs:
+    script: '$(Build.SourcesDirectory)\utils\DistributionTool.exe --build --input $(Build.SourcesDirectory)\src\bin\Release\au.com.mullineaux.lifx.sdPlugin --output $(Build.ArtifactStagingDirctory)'
 - task: PublishBuildArtifacts@1
   displayName: Publish artifact
   inputs:
