@@ -8,10 +8,8 @@ param(
 )
 [int]$StreamdeckLoadTimeout = 7
 
-switch ($Release) {
-    $True { $Version = "Release" }
-    Default { $Version = "Debug" }
-}
+
+if ($Release) { $Version = "Release" } else { $Version = "Debug" } 
 
 # Compile the plugin source
 Push-Location "$ProjectRoot\"
