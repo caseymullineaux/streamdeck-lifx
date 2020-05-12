@@ -25,6 +25,7 @@ namespace au.com.mullineaux.lifx
                 return instance;
             }
 
+
             [JsonProperty(PropertyName = "authToken")]
             public string AuthToken { get; set; }
 
@@ -79,7 +80,7 @@ namespace au.com.mullineaux.lifx
         {
             var payload = e.Event.Payload;
             Logger.Instance.LogMessage(TracingLevel.INFO, "OnSendToPlugin called");
-            Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Payload: {payload.ToString()}");
+            // Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Payload: {payload.ToString()}");
 
             if (payload["property_inspector"] != null)
             {
@@ -87,8 +88,12 @@ namespace au.com.mullineaux.lifx
                 switch (payload["property_inspector"].ToString())
                 {
                     case "updateApproval":
-                        Logger.Instance.LogMessage(TracingLevel.DEBUG, $"PAT: {(string)payload["authToken"]}");
+                        // Logger.Instance.LogMessage(TracingLevel.DEBUG, $"PAT: {(string)payload["authToken"]}");
                         settings.AuthToken = (string)payload["authToken"];
+                        await SaveSettings();
+                        break;
+                    case "resetPlugin":
+                        settings.AuthToken = String.Empty;
                         await SaveSettings();
                         break;
                 }
@@ -176,9 +181,14 @@ namespace au.com.mullineaux.lifx
 
         public override void OnTick()
         {
-            // TODO:  Set the image of the icon if no access token has been configured
-            // if (settings.AuthToken == String.Empty) {
-            //     await Connection.SetImageAsync(Properties.Settings.Default.NoToken).ConfigureAwait(false);
+            // TODO: Set the image of the icon if no access token has been configured
+
+            // if (settings.AuthToken == String.Empty || settings.AuthToken == "")
+            // {
+
+            //     Logger.Instance.LogMessage(TracingLevel.DEBUG, $"AuthToken={settings.AuthToken}");
+            //     await Connection.SetImageAsync(Properties.Settings.Default.NoToken);
+
             // }
 
         }

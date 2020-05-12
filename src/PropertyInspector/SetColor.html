@@ -16,15 +16,24 @@
   </head>
   <body>
     <div class="sdpi-wrapper">
+      <!-- <div class="sdpi-item" id="dvHidden">
+        <input
+          value="tokenSet"
+          type="hidden"
+          class="sdProperty"
+          oninput="setSettings()"
+        />
+      </div> -->
+
       <div class="sdpi-item" id="dvAuthToken">
         <div class="sdpi-item-label">Authentication Token</div>
+        <button class="sdpi-item-value" onClick="resetPlugin()">Change</button>
         <input
           class="sdpi-item-value sdProperty"
-          placeholder=""
           value=""
           id="authToken"
           oninput="setSettings()"
-          required
+          type="hidden"
         />
       </div>
       <div class="sdpi-item" id="dvSelector">

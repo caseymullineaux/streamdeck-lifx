@@ -61,6 +61,7 @@ function resetPlugin() {
   var payload = {};
   payload.property_inspector = "resetPlugin";
   sendPayloadToPlugin(payload);
+  authWindow = window.open("setup/setup.html");
 }
 
 function openLIFXLogin() {
