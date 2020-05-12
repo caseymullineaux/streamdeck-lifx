@@ -1,4 +1,5 @@
-﻿using BarRaider.SdTools;
+﻿using au.com.mullineaux.lifx.Classes;
+using BarRaider.SdTools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -31,6 +32,7 @@ namespace au.com.mullineaux.lifx
 
             [JsonProperty(PropertyName = "selector")]
             public string Selector { get; set; }
+
 
             [JsonProperty(PropertyName = "color")]
             public string Color { get; set; }
@@ -206,11 +208,14 @@ namespace au.com.mullineaux.lifx
         private Task SaveSettings()
         {
             return Connection.SetSettingsAsync(JObject.FromObject(settings));
+
         }
+
+
 
         #endregion
 
-        #region "Private Methods"
+        #region Private Classes
         public class Payload
         {
             [JsonProperty(PropertyName = "power")]
@@ -229,7 +234,6 @@ namespace au.com.mullineaux.lifx
         #endregion
 
     }
-    //public enum Color { Blue, Cyan, Green, Orange, Pink, Purple, Red, Yellow, White };
 
 
 

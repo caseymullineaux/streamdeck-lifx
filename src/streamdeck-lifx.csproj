@@ -82,6 +82,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\LIFXApi.cs" />
+    <Compile Include="Classes\Light.cs" />
+    <Compile Include="Classes\LightGroup.cs" />
     <Compile Include="DecreaseBrightness.cs" />
     <Compile Include="EffectBreathe.cs" />
     <Compile Include="EffectMove.cs" />
