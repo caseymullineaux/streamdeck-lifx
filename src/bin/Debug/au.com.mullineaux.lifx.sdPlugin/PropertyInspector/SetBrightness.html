@@ -11,8 +11,7 @@
     <title>LIFX Color Settings</title>
     <link rel="stylesheet" href="sdpi.css" />
     <script src="sdtools.common.js"></script>
-    <script src="SetColor.js"></script>
-    <script src="setup.js"></script>
+    <script src="SetColorRGB.js"></script>
   </head>
   <body>
     <div class="sdpi-wrapper">
@@ -38,32 +37,12 @@
           required
         />
       </div>
-      <div class="sdpi-item" id="select_single">
-        <div class="sdpi-item" id="dvColor">
-          <div class="sdpi-item-label">Color</div>
-          <select
-            class="sdpi-item-value select sdProperty"
-            id="color"
-            oninput="setSettings()"
-            value=""
-          >
-            <option value="blue">Blue</option>
-            <option value="cyan">Cyan</option>
-            <option value="green">Green</option>
-            <option value="orange">Orange</option>
-            <option value="pink">Pink</option>
-            <option value="purple">Purple</option>
-            <option value="red">Red</option>
-            <option value="yellow">Yellow</option>
-            <option value="white">White</option>
-          </select>
-        </div>
-      </div>
     </div>
+    
     <div type="range" class="sdpi-item" id="dvBrightness">
       <div class="sdpi-item-label" id="brightnessTitle">Brightness</div>
       <div class="sdpi-item-value">
-        <span class="clickable" value="1">0</span>
+        <span class="clickable" value="0">0</span>
         <input
           type="range"
           min="0"
@@ -76,7 +55,7 @@
           oninput="setSettings()"
         />
         <span class="clickable" value="100">100</span>
-        <datalist id="brightnessValues">
+        <datalist id="brigntnessValues">
           <option>100</option>
         </datalist>
       </div>

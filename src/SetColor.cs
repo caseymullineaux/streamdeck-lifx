@@ -75,8 +75,24 @@ namespace au.com.mullineaux.lifx
         {
         }
 
-        private void Connection_OnSendToPlugin(object sender, BarRaider.SdTools.Wrappers.SDEventReceivedEventArgs<BarRaider.SdTools.Events.SendToPlugin> e)
+        private async void Connection_OnSendToPlugin(object sender, BarRaider.SdTools.Wrappers.SDEventReceivedEventArgs<BarRaider.SdTools.Events.SendToPlugin> e)
         {
+            var payload = e.Event.Payload;
+            Logger.Instance.LogMessage(TracingLevel.INFO, "OnSendToPlugin called");
+            Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Payload: {payload.ToString()}");
+
+            if (payload["property_inspector"] != null)
+            {
+
+                switch (payload["property_inspector"].ToString())
+                {
+                    case "updateApproval":
+                        Logger.Instance.LogMessage(TracingLevel.DEBUG, $"PAT: {(string)payload["authToken"]}");
+                        settings.AuthToken = (string)payload["authToken"];
+                        await SaveSettings();
+                        break;
+                }
+            }
         }
 
         private void Connection_OnPropertyInspectorDidDisappear(object sender, BarRaider.SdTools.Wrappers.SDEventReceivedEventArgs<BarRaider.SdTools.Events.PropertyInspectorDidDisappear> e)
@@ -158,7 +174,14 @@ namespace au.com.mullineaux.lifx
 
         public override void KeyReleased(KeyPayload payload) { }
 
-        public override void OnTick() { }
+        public override void OnTick()
+        {
+            // TODO:  Set the image of the icon if no access token has been configured
+            // if (settings.AuthToken == String.Empty) {
+            //     await Connection.SetImageAsync(Properties.Settings.Default.NoToken).ConfigureAwait(false);
+            // }
+
+        }
 
         public override void ReceivedSettings(ReceivedSettingsPayload payload)
         {

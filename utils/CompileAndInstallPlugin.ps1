@@ -6,10 +6,13 @@ param(
     [string]$UUID = "au.com.mullineaux.lifx"
 
 )
-[int]$StreamdeckLoadTimeout = 7
+[int]$StreamdeckLoadTimeout = 3
 
 
 if ($Release) { $Version = "Release" } else { $Version = "Debug" } 
+# Stop the StreamDeck & plugin processes
+Stop-Process -Name "StreamDeck" -ErrorAction SilentlyContinue
+Stop-Process -Name $UUID -ErrorAction SilentlyContinue
 
 # Compile the plugin source
 Push-Location "$ProjectRoot\"
@@ -23,10 +26,7 @@ $Installer = Get-Item "$($WorkingDir.FullName)\$UUID.streamDeckPlugin"
 If (Test-Path $Installer) { Remove-Item $Installer }
 & $env:comspec "/c $DistributionTool --build --input $($WorkingDir.FullName)\$UUID.sdPlugin --output $($WorkingDir.FullName)"
 
-# Stop the StreamDeck & plugin processes
-Stop-Process -Name "StreamDeck" -ErrorAction SilentlyContinue
-Stop-Process -Name $UUID -ErrorAction SilentlyContinue
-Start-Sleep -Seconds 2
+
 
 # Remove the previous version of the plugin 
 # from the StreamDeck plugin directory

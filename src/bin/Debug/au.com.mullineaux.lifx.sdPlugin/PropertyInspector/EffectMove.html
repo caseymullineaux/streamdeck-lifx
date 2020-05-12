@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>LIFX Color Settings</title>
+    <link rel="stylesheet" href="sdpi.css" />
+    <script src="sdtools.common.js"></script>
+    <script src="EffectBreathe.js"></script>
+  </head>
+  <body>
+      <div class="sdpi-wrapper">
+          <div class="sdpi-item" id="dvAuthToken">
+              <div class="sdpi-item-label">Authentication Token</div>
+              <input class="sdpi-item-value sdProperty"
+                     placeholder=""
+                     value=""
+                     id="authToken"
+                     oninput="setSettings()"
+                     required />
+          </div>
+          <div class="sdpi-item" id="dvSelector">
+              <div class="sdpi-item-label">Selector</div>
+              <input class="sdpi-item-value sdProperty"
+                     placeholder=""
+                     value=""
+                     id="selector"
+                     oninput="setSettings()"
+                     required />
+          </div>
+          <div class="sdpi-item" id="select_single">
+              <div class="sdpi-item" id="dvDirection">
+                  <div class="sdpi-item-label">Direction</div>
+                  <select class="sdpi-item-value select sdProperty"
+                          id="direction"
+                          oninput="setSettings()"
+                          value="forward"
+                          required>
+                      <option value="forward">Forward</option>
+                      <option value="backward">Backward</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+
+      
+
+      <div class="sdpi-item" id="dvPeriod">
+          <div class="sdpi-item-label">Period (sec)</div>
+          <input class="sdpi-item-value sdProperty"
+                 type="number"
+                 min="1"
+                 max="3155760000"
+                 placeholder="[0-3155760000] (100 years) - Default:1"
+                 value="1"
+                 id="period"
+                 oninput="setSettings()" />
+      </div>
+
+      <div class="sdpi-item" id="dvCycles">
+          <div class="sdpi-item-label">Cycles</div>
+          <input class="sdpi-item-value sdProperty"
+                 type="number"
+                 min="0"
+                 placeholder="0=off, empty=infinite"
+                 value=""
+                 id="cycles"
+                 oninput="setSettings()" />
+      </div>
+
+
+  </body>
+</html>
