@@ -21,6 +21,7 @@ namespace au.com.mullineaux.lifx
             {
                 PluginSettings instance = new PluginSettings();
                 instance.AuthToken = String.Empty;
+                instance.Selectors = null;
                 instance.Selector = String.Empty;
                 instance.Color = "white";
                 return instance;
@@ -44,7 +45,8 @@ namespace au.com.mullineaux.lifx
             [JsonProperty(PropertyName = "duration")]
             public double Duration { get; set; }
 
-
+            [JsonProperty(PropertyName = "selectors")]
+            public List<Light> Selectors { get; set; }
         }
 
         #region Private Members
@@ -97,6 +99,13 @@ namespace au.com.mullineaux.lifx
                     case "resetPlugin":
                         settings.AuthToken = String.Empty;
                         await SaveSettings();
+                        break;
+                    case "updateSelectors":
+                        if (!String.IsNullOrEmpty(settings.AuthToken))
+                        {
+                            settings.Selectors = await LIFXApi.GetLights(settings.AuthToken);
+                            await SaveSettings();
+                        }
                         break;
                 }
             }

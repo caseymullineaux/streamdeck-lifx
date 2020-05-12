@@ -58,6 +58,39 @@ namespace au.com.mullineaux.lifx.Classes
         }
 
 
+        public async static Task<List<LightGroup>> GetLightGroups(string authToken)
+        {
+            List<LightGroup> lightGroups = new List<LightGroup>();
+            string requestUri = $"https://api.lifx.com/v1/lights/all";
+
+            Client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            request.Headers.Add("Authorization", $"Bearer {authToken}");
+            var response = await Client.SendAsync(request);
+
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Logger.Instance.LogMessage(TracingLevel.INFO, $"Call to LIFX API failed");
+                Logger.Instance.LogMessage(TracingLevel.INFO, $"Status Code: {response.StatusCode}");
+            }
+            else
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var lights = JsonConvert.DeserializeObject<List<Light>>(data);
+
+
+                foreach (var light in lights)
+                {
+                    lightGroups.Add(light.Group);
+                }
+
+            }
+            return lightGroups;
+        }
+
+
 
 
         public static void SetState()

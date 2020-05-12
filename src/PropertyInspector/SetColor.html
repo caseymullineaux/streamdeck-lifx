@@ -36,16 +36,47 @@
           type="hidden"
         />
       </div>
+      <!-- Light select -->
+      <div type="radio" class="sdpi-item" id="rdSelectorType">
+        <div class="sdpi-item-label">Type</div>
+        <div class="sdpi-item-value">
+          <div class="sdpi-item-child">
+            <input
+              id="selectorLight"
+              class="sdProperty sdCheckbox"
+              type="radio"
+              name="rdLight"
+              oninput="setSettings()"
+            />
+            <label for="liveGameIcon" class="sdpi-item-label"
+              ><span></span>Light</label
+            >
+          </div>
+          <div class="sdpi-item-child">
+            <input
+              id="selectorGroup"
+              class="sdProperty sdCheckbox"
+              type="radio"
+              name="rdGroup"
+              oninput="setSettings()"
+            />
+            <label for="liveUserIcon" class="sdpi-item-label"
+              ><span></span>Group</label
+            >
+          </div>
+        </div>
+      </div>
+
       <div class="sdpi-item" id="dvSelector">
         <div class="sdpi-item-label">Selector</div>
-        <input
-          class="sdpi-item-value sdProperty"
-          placeholder=""
-          value=""
-          id="selector"
+        <select
+          class="sdpi-item-value select sdProperty sdList"
+          id="selectors"
           oninput="setSettings()"
-          required
-        />
+          sdListTextProperty="label"
+          sdListValueProperty="id"
+          sdValueField="selector"
+        ></select>
       </div>
       <div class="sdpi-item" id="select_single">
         <div class="sdpi-item" id="dvColor">

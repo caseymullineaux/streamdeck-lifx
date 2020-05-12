@@ -23,6 +23,8 @@
 document.addEventListener("settingsUpdated", function (event) {
   console.log("Got settingsUpdated event!");
   window.setTimeout(updatePeakLabel, 500);
+  console.log("Updating selectors ...");
+  updateSelectors();
 });
 
 function checkSettings(payload) {
@@ -39,5 +41,11 @@ function updatePeakLabel() {
 function resetCounter() {
   var payload = {};
   payload.property_inspector = "resetCounter";
+  sendPayloadToPlugin(payload);
+}
+
+function updateSelectors() {
+  var payload = {};
+  payload.property_inspector = "updateSelectors";
   sendPayloadToPlugin(payload);
 }
