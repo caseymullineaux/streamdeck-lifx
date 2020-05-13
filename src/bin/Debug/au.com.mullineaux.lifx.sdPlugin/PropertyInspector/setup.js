@@ -2,7 +2,7 @@
 
 document.addEventListener("websocketCreate", function () {
   console.log("Websocket created!");
-  checkAuthToken(actionInfo.payload.settings);
+  checkTokenIsValid(actionInfo.payload.settings);
   window.setTimeout(updatePeakLabel, 500);
 
   websocket.addEventListener("message", function (event) {
@@ -13,10 +13,10 @@ document.addEventListener("websocketCreate", function () {
 
     if (jsonObj.event === "sendToPropertyInspector") {
       var payload = jsonObj.payload;
-      checkAuthToken(payload);
+      checkTokenIsValid(payload);
     } else if (jsonObj.event === "didReceiveSettings") {
       var payload = jsonObj.payload;
-      checkAuthToken(payload.settings);
+      checkTokenIsValid(payload.settings);
     }
     window.setTimeout(updatePeakLabel, 500);
   });
@@ -27,15 +27,14 @@ document.addEventListener("settingsUpdated", function (event) {
   window.setTimeout(updatePeakLabel, 500);
 });
 
-function checkAuthToken(payload) {
-  console.log("Checking auth token ...");
+function checkTokenIsValid(payload) {
+  console.log("Validating access token ...");
   var authToken = document.getElementById("authToken");
   authToken.value = payload["authToken"];
 
-  // check if the auth token has a value
-  if (payload["authToken"]) {
+  if (payload["authTokenIsValid"]) {
     setSettingsWrapper("");
-    var event = new Event("authToken");
+    var event = new Event("authTokenIsValid");
     document.dispatchEvent(event);
 
     if (authWindow) {
@@ -76,10 +75,10 @@ function openLIFXLogin() {
 
 function updateAuthToken(val) {
   var authToken = val;
-  console.log("Received from form: " + authToken);
+  console.log("Received from input form: " + authToken);
 
   var payload = {};
-  payload.property_inspector = "updateApproval";
+  payload.property_inspector = "validateToken";
   payload.authToken = authToken;
   console.log(payload);
   //console.log("PAT:" + payload.authToken);

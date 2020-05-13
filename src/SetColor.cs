@@ -21,6 +21,7 @@ namespace au.com.mullineaux.lifx
             {
                 PluginSettings instance = new PluginSettings();
                 instance.AuthToken = String.Empty;
+                instance.AuthTokenIsValid = false;
                 instance.Selectors = null;
                 instance.Selector = String.Empty;
                 instance.Color = "white";
@@ -30,6 +31,10 @@ namespace au.com.mullineaux.lifx
 
             [JsonProperty(PropertyName = "authToken")]
             public string AuthToken { get; set; }
+
+            [JsonProperty(PropertyName = "authTokenIsValid")]
+            public bool AuthTokenIsValid { get; set; }
+
 
             [JsonProperty(PropertyName = "selector")]
             public string Selector { get; set; }
@@ -91,13 +96,19 @@ namespace au.com.mullineaux.lifx
 
                 switch (payload["property_inspector"].ToString())
                 {
-                    case "updateApproval":
-                        // Logger.Instance.LogMessage(TracingLevel.DEBUG, $"PAT: {(string)payload["authToken"]}");
-                        settings.AuthToken = (string)payload["authToken"];
+                    case "validateToken":
+                        // Validate the token
+                        settings.AuthTokenIsValid = false;
+                        var _authToken = (string)payload["authToken"];
+
+                        settings.AuthTokenIsValid = await LIFXApi.ValidateAuthToken(_authToken);
+                        if (settings.AuthTokenIsValid == true) { settings.AuthToken = _authToken; }
+                        Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token Valid: {settings.AuthTokenIsValid}");
                         await SaveSettings();
                         break;
                     case "resetPlugin":
                         settings.AuthToken = String.Empty;
+                        settings.AuthTokenIsValid = false;
                         await SaveSettings();
                         break;
                     case "updateSelectors":

@@ -178,9 +178,9 @@ D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.c
 D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\images\paired.png
 D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\js\introView.js
 D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\js\main.js
-D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\js\pairingView.js
-D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\js\resultView.js
 D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\setup.html
 D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\en.json
 D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup.js
 D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\js\finishView.js
+D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\js\linkingView.js
+D:\source\personal\caseymullineaux.github.com\streamdeck-lifx\src\bin\Debug\au.com.mullineaux.lifx.sdPlugin\PropertyInspector\setup\js\validatingView.js

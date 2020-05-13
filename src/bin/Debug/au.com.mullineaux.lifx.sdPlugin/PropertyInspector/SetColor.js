@@ -44,8 +44,9 @@ function resetCounter() {
   sendPayloadToPlugin(payload);
 }
 
-function updateSelectors() {
+function updateSelectors(type) {
   var payload = {};
   payload.property_inspector = "updateSelectors";
+  payload.type = type;
   sendPayloadToPlugin(payload);
 }

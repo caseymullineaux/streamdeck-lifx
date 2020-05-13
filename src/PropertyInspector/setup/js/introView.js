@@ -21,16 +21,16 @@ function loadIntroView() {
   document.getElementById("content").innerHTML = content;
 
   // Add event listener
-  document.getElementById("start").addEventListener("click", startPairing);
-  document.addEventListener("enterPressed", startPairing);
+  document.getElementById("start").addEventListener("click", startLinking);
+  document.addEventListener("enterPressed", startLinking);
 
   document.getElementById("close").addEventListener("click", close);
   document.addEventListener("escPressed", close);
 
   // Load the pairing view
-  function startPairing() {
+  function startLinking() {
     unloadIntroView();
-    loadPairingView();
+    loadLinkView();
   }
 
   // Close the window
@@ -41,7 +41,7 @@ function loadIntroView() {
   // Unload view
   function unloadIntroView() {
     // Remove event listener
-    document.removeEventListener("enterPressed", startPairing);
+    document.removeEventListener("enterPressed", startLinking);
     document.removeEventListener("escPressed", close);
   }
 }

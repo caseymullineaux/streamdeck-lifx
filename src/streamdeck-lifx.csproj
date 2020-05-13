@@ -319,10 +319,10 @@
     <Content Include="PropertyInspector\setup\js\main.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="PropertyInspector\setup\js\pairingView.js">
+    <Content Include="PropertyInspector\setup\js\linkingView.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="PropertyInspector\setup\js\resultView.js">
+    <Content Include="PropertyInspector\setup\js\validatingView.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="PropertyInspector\setup\setup.html">

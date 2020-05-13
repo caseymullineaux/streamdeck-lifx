@@ -7,14 +7,13 @@
         "Start": "Link Account",
         "Close": "Not Now"
       },
-      "Pairing": {
+      "Linking": {
         "Title": "Link Account",
         "Description": "To use this plugin you need to authorize this app to communicate with your LIFX cloud account.",
-        "DescriptionPart2": "Start by ",
-        "DescriptionPart3": " and approving this app on  website. <br/>Then paste the Personal Access Token to the textbox below:",
-        "ClickHere": "clicking here",
+        "DescriptionPart2": " to generate a Personal Access Token, and paste it into the box below.",
+        "ClickHere": "Click here",
         "ApprovalCodeTitle": "Personal Access Token (PAT)",
-        "ApprovalPlaceholder": "Paste the entire code",
+        "ApprovalPlaceholder": " Paste the entire code",
         "NotePopup": "Note: After submitting, this window will close but will open up again if the code is invalid.",
         "Submit": "Submit Access Token",
         "Close": "Cancel"
@@ -28,7 +27,7 @@
         "ValidateTitle": "Validating Code",
         "ValidateDescription": "This may take up to one minute...",
         "SuccessTitle": "Code Accepted",
-        "SuccessDescription": "You may now close this window and start using Twitch Pager",
+        "SuccessDescription": "You may now close this window and start using the LIFX plugin.",
         "FailTitle": "VALIDATION FAILED",
         "FailDescription": "We failed to validate the code. Please try again with a new code. Make sure to copy-paste the code entirely",
         "FailRetry": "Try Again",

@@ -16,7 +16,7 @@ Stop-Process -Name $UUID -ErrorAction SilentlyContinue
 
 # Compile the plugin source
 Push-Location "$ProjectRoot\"
-& $env:comspec "/c dotnet build --no-incremental"
+& $env:comspec "/c dotnet build --no-incremental --force"
 Pop-Location
 
 # Generate a plugin executable 
@@ -38,6 +38,10 @@ Start-Process -FilePath $StreamDeckPath
 Start-Sleep -Seconds $StreamdeckLoadTimeout
 
 # Run the plugin installer
-Start-Process $Installer
+Start-Process $Installer -Wait
+Start-Sleep -Seconds 5
+# Stream the logs
+Get-Content $env:APPDATA\Elgato\StreamDeck\Plugins\au.com.mullineaux.lifx.sdPlugin\pluginlog.log -Wait
+
 
 

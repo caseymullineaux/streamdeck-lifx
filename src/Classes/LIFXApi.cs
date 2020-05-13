@@ -16,15 +16,16 @@ namespace au.com.mullineaux.lifx.Classes
         public static HttpClient Client = new HttpClient();
         public async static Task<bool> ValidateAuthToken(string authToken)
         {
-            try
-            {
-                await GetLights(authToken);
-                return true;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
+            string requestUri = $"https://api.lifx.com/v1/lights/all";
+            Client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            request.Headers.Add("Authorization", $"Bearer {authToken}");
+            var response = await Client.SendAsync(request);
+
+
+            bool ret = (response.StatusCode != HttpStatusCode.Unauthorized) ? true : false;
+            return ret;
         }
 
         public async static Task<List<Light>> GetLights(string authToken)
@@ -43,10 +44,7 @@ namespace au.com.mullineaux.lifx.Classes
             {
                 Logger.Instance.LogMessage(TracingLevel.INFO, $"Call to LIFX API failed");
                 Logger.Instance.LogMessage(TracingLevel.INFO, $"Status Code: {response.StatusCode}");
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    throw new UnauthorizedAccessException();
-                }
+
             }
             else
             {
