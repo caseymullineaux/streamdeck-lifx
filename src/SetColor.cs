@@ -4,8 +4,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,21 +17,32 @@ namespace au.com.mullineaux.lifx
         {
             public static PluginSettings CreateDefaultSettings()
             {
-                PluginSettings instance = new PluginSettings();
-                instance.AuthToken = String.Empty;
-                instance.AuthTokenIsValid = false;
-                instance.Selectors = null;
-                instance.Selector = String.Empty;
-                instance.Color = "white";
+                PluginSettings instance = new PluginSettings()
+                {
+                    AuthToken = Properties.Settings.Default.AuthToken,
+                    AuthTokenIsValid = false,
+                    SelectorType = String.Empty,
+                    SelectorDict = null,
+                    Color = "white"
+                };
+
+
                 return instance;
             }
 
 
             [JsonProperty(PropertyName = "authToken")]
-            public string AuthToken { get; set; }
+            public string AuthToken { get; set; } = Properties.Settings.Default.AuthToken;
 
             [JsonProperty(PropertyName = "authTokenIsValid")]
             public bool AuthTokenIsValid { get; set; }
+
+
+            [JsonProperty(PropertyName = "selectorType")]
+            public string SelectorType { get; set; }
+
+            [JsonProperty(PropertyName = "selectorDict")]
+            public Dictionary<string, string> SelectorDict { get; set; }
 
 
             [JsonProperty(PropertyName = "selector")]
@@ -44,33 +53,40 @@ namespace au.com.mullineaux.lifx
             public string Color { get; set; }
 
             [JsonProperty(PropertyName = "brightness")]
-            public double Brightness { get; set; }
+            public double Brightness { get; set; } = 1.0;
 
 
             [JsonProperty(PropertyName = "duration")]
             public double Duration { get; set; }
 
-            [JsonProperty(PropertyName = "selectors")]
-            public List<Light> Selectors { get; set; }
+
+
+
         }
 
         #region Private Members
 
         private PluginSettings settings;
 
-
         #endregion
         public SetColor(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
+
+
+
             if (payload.Settings == null || payload.Settings.Count == 0)
             {
+
                 this.settings = PluginSettings.CreateDefaultSettings();
+                SaveSettings();
+                Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Initialized Token: {settings.AuthToken}");
             }
             else
             {
                 this.settings = payload.Settings.ToObject<PluginSettings>();
             }
 
+            Connection.GetGlobalSettingsAsync();
             Connection.OnApplicationDidLaunch += Connection_OnApplicationDidLaunch;
             Connection.OnApplicationDidTerminate += Connection_OnApplicationDidTerminate;
             Connection.OnDeviceDidConnect += Connection_OnDeviceDidConnect;
@@ -89,7 +105,7 @@ namespace au.com.mullineaux.lifx
         {
             var payload = e.Event.Payload;
             Logger.Instance.LogMessage(TracingLevel.INFO, "OnSendToPlugin called");
-            // Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Payload: {payload.ToString()}");
+            // Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token: {settings.AuthToken}");
 
             if (payload["property_inspector"] != null)
             {
@@ -98,23 +114,45 @@ namespace au.com.mullineaux.lifx
                 {
                     case "validateToken":
                         // Validate the token
-                        settings.AuthTokenIsValid = false;
+                        // settings.AuthTokenIsValid = false;
                         var _authToken = (string)payload["authToken"];
+                        Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token from PI: {_authToken}");
 
                         settings.AuthTokenIsValid = await LIFXApi.ValidateAuthToken(_authToken);
-                        if (settings.AuthTokenIsValid == true) { settings.AuthToken = _authToken; }
-                        Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token Valid: {settings.AuthTokenIsValid}");
+                        if (settings.AuthTokenIsValid == true)
+                        {
+                            settings.AuthToken = _authToken;
+                            Properties.Settings.Default.AuthToken = _authToken;
+                            Properties.Settings.Default.Save();
+                        }
+                        Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token Valid: {Properties.Settings.Default.AuthToken}");
                         await SaveSettings();
                         break;
                     case "resetPlugin":
                         settings.AuthToken = String.Empty;
                         settings.AuthTokenIsValid = false;
                         await SaveSettings();
+
+                        Properties.Settings.Default.AuthToken = String.Empty;
+                        Properties.Settings.Default.Save();
+
                         break;
                     case "updateSelectors":
-                        if (!String.IsNullOrEmpty(settings.AuthToken))
+                        if (!String.IsNullOrEmpty(Properties.Settings.Default.AuthToken))
                         {
-                            settings.Selectors = await LIFXApi.GetLights(settings.AuthToken);
+                            var selectors = await LIFXApi.GetSelectors(Properties.Settings.Default.AuthToken);
+                            settings.SelectorType = (string)payload["type"];
+
+                            if (settings.SelectorType == "Single")
+                            {
+                                settings.SelectorDict = selectors.Item1;
+
+                            }
+                            else
+                            {
+                                settings.SelectorDict = selectors.Item2;
+                            }
+
                             await SaveSettings();
                         }
                         break;
@@ -221,7 +259,10 @@ namespace au.com.mullineaux.lifx
             SaveSettings();
         }
 
-        public override void ReceivedGlobalSettings(ReceivedGlobalSettingsPayload payload) { }
+        public override void ReceivedGlobalSettings(ReceivedGlobalSettingsPayload payload)
+        {
+
+        }
 
         #region Private Methods
 
@@ -230,8 +271,6 @@ namespace au.com.mullineaux.lifx
             return Connection.SetSettingsAsync(JObject.FromObject(settings));
 
         }
-
-
 
         #endregion
 

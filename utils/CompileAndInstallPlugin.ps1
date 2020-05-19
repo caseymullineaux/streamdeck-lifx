@@ -40,6 +40,9 @@ Start-Sleep -Seconds $StreamdeckLoadTimeout
 # Run the plugin installer
 Start-Process $Installer -Wait
 Start-Sleep -Seconds 5
+
+Write-Host "Property Inspector: http://localhost:23654/" -ForegroundColor Yellow
+
 # Stream the logs
 Get-Content $env:APPDATA\Elgato\StreamDeck\Plugins\au.com.mullineaux.lifx.sdPlugin\pluginlog.log -Wait
 

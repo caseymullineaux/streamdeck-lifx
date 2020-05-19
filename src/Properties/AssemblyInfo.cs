@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("au.com.mullineaux.lifx")]
-[assembly: AssemblyDescription("A LIFX plugin for the Streamdeck")]
+[assembly: AssemblyDescription("A LIFX plugin for the Elgato Streamdeck")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Casey Mullineaux")]
 [assembly: AssemblyProduct("streamdeck-lifx")]

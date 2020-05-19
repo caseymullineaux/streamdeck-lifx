@@ -42,14 +42,15 @@
         <div class="sdpi-item-value">
           <div class="sdpi-item-child">
             <input
-              id="selectorLight"
+              id="selectorSingle"
               class="sdProperty sdCheckbox"
               type="radio"
-              name="rdLight"
-              oninput="setSettings()"
+              name="rdSelectorSingle"
+              checked="checked"
+              oninput="updateSelectors('single')"
             />
-            <label for="liveGameIcon" class="sdpi-item-label"
-              ><span></span>Light</label
+            <label for="selectorSingle" class="sdpi-item-label"
+              ><span></span>Single</label
             >
           </div>
           <div class="sdpi-item-child">
@@ -57,10 +58,10 @@
               id="selectorGroup"
               class="sdProperty sdCheckbox"
               type="radio"
-              name="rdGroup"
-              oninput="setSettings()"
+              name="rdSelectorGroup"
+              oninput="updateSelectors('group')"
             />
-            <label for="liveUserIcon" class="sdpi-item-label"
+            <label for="selectorGroup" class="sdpi-item-label"
               ><span></span>Group</label
             >
           </div>
@@ -71,9 +72,9 @@
         <div class="sdpi-item-label">Selector</div>
         <select
           class="sdpi-item-value select sdProperty sdList"
-          id="selectors"
+          id="selectorDict"
           oninput="setSettings()"
-          sdListTextProperty="label"
+          sdListTextProperty="value"
           sdListValueProperty="id"
           sdValueField="selector"
         ></select>

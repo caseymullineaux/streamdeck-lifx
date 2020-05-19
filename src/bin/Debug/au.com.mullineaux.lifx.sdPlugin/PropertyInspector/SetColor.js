@@ -29,6 +29,7 @@ document.addEventListener("settingsUpdated", function (event) {
 
 function checkSettings(payload) {
   console.log("Checking Settings");
+  console.log(payload);
 }
 
 function updatePeakLabel() {

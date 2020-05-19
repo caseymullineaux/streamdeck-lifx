@@ -1,8 +1,11 @@
 ﻿var authWindow = null;
 
 document.addEventListener("websocketCreate", function () {
-  console.log("Websocket created!");
+    console.log("Websocket created!");
+    //getGlobalSettings();
+  console.log(actionInfo.payload.settings);
   checkTokenIsValid(actionInfo.payload.settings);
+
   window.setTimeout(updatePeakLabel, 500);
 
   websocket.addEventListener("message", function (event) {
@@ -11,9 +14,10 @@ document.addEventListener("websocketCreate", function () {
     // Received message from Stream Deck
     var jsonObj = JSON.parse(event.data);
 
-    if (jsonObj.event === "sendToPropertyInspector") {
-      var payload = jsonObj.payload;
-      checkTokenIsValid(payload);
+      if (jsonObj.event === "sendToPropertyInspector") {
+          var payload = jsonObj.payload;
+          checkTokenIsValid(payload);
+     
     } else if (jsonObj.event === "didReceiveSettings") {
       var payload = jsonObj.payload;
       checkTokenIsValid(payload.settings);
@@ -22,6 +26,8 @@ document.addEventListener("websocketCreate", function () {
   });
 });
 
+
+
 document.addEventListener("settingsUpdated", function (event) {
   console.log("Got settingsUpdated event!");
   window.setTimeout(updatePeakLabel, 500);
@@ -29,7 +35,11 @@ document.addEventListener("settingsUpdated", function (event) {
 
 function checkTokenIsValid(payload) {
   console.log("Validating access token ...");
+  console.log(payload);
+
   var authToken = document.getElementById("authToken");
+  console.log("Token: " + payload["authToken"]);
+
   authToken.value = payload["authToken"];
 
   if (payload["authTokenIsValid"]) {
@@ -46,7 +56,9 @@ function checkTokenIsValid(payload) {
     if (authWindow) {
       authWindow.loadFailedView();
     } else {
-      authWindow = window.open("setup/setup.html");
+        if (authToken.value == null) {
+            authWindow = window.open("setup/setup.html");
+        }
     }
   }
 }
