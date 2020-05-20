@@ -27,12 +27,13 @@ namespace au.com.mullineaux.lifx.Classes
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 Properties.Settings.Default.AuthTokenIsValid = false;
-            } else
+            }
+            else
             {
                 Properties.Settings.Default.AuthToken = _authToken;
                 Properties.Settings.Default.AuthTokenIsValid = true;
             }
-            
+
             return Properties.Settings.Default.AuthTokenIsValid;
         }
 
@@ -77,7 +78,10 @@ namespace au.com.mullineaux.lifx.Classes
                     });
                 }
 
-                groups = groups.Distinct().ToList();
+                lights = lights.OrderBy(x => x.Name).ToList();
+                groups = groups.GroupBy(x => x.Id).Select(y => y.First()).OrderBy(x => x.Name).ToList();
+
+
 
             }
 
@@ -206,17 +210,6 @@ namespace au.com.mullineaux.lifx.Classes
             public string Id { get; set; }
             public string Name { get; set; }
 
-            // public Selector(Light _light)
-            // {
-            //     this.Id = _light.Id;
-            //     this.Name = _light.Label;
-            // }
-            // public Selector(LightGroup _group)
-            // {
-            //     this.Id = _group.Id;
-            //     this.Name = _group.Name;
-
-            // }
         }
 
     }
