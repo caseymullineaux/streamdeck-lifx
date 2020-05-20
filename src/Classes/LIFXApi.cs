@@ -24,27 +24,24 @@ namespace au.com.mullineaux.lifx.Classes
             request.Headers.Add("Authorization", $"Bearer {_authToken}");
             var response = await Client.SendAsync(request);
 
-            if (response.StatusCode != HttpStatusCode.Unauthorized)
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                Properties.Settings.Default.AuthTokenIsValid = false;
+            } else
             {
                 Properties.Settings.Default.AuthToken = _authToken;
-                //AuthTokenIsValid = true;
-                return true;
+                Properties.Settings.Default.AuthTokenIsValid = true;
             }
-            return false;
+            
+            return Properties.Settings.Default.AuthTokenIsValid;
         }
 
 
-        public static async Task<Tuple<Dictionary<string, string>, Dictionary<string, string>>> GetSelectors(string _authToken)
+        public static async Task<Tuple<List<Selector>, List<Selector>>> GetSelectors(string _authToken)
         {
 
-            // Queries the LIFX API and returns a tuple of dictionaries for each selector 
-            // mapping their selctor Id to the name Name
-            // Example:
-            // Item1 = Lights: d073d5124, Computer LED
-            // Item2 = Groups: b21248782248754774, Office
-
-            var lights_dict = new Dictionary<string, string>();
-            var groups_dict = new Dictionary<string, string>();
+            List<Selector> lights = new List<Selector>();
+            List<Selector> groups = new List<Selector>();
 
             Client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -62,22 +59,29 @@ namespace au.com.mullineaux.lifx.Classes
             else
             {
                 var data = await response.Content.ReadAsStringAsync();
-                List<Light> lights = JsonConvert.DeserializeObject<List<Light>>(data); lights = JsonConvert.DeserializeObject<List<Light>>(data);
+                List<Light> lights_list = JsonConvert.DeserializeObject<List<Light>>(data);
 
-
-                lights_dict = lights.ToDictionary(x => x.Id, x => x.Label);
-
-                foreach (var light in lights)
+                foreach (var light in lights_list)
                 {
-                    if (!groups_dict.ContainsKey(light.Group.Id))
+                    lights.Add(new Selector()
                     {
-                        groups_dict.Add(light.Group.Id, light.Group.Name);
-                    }
+                        Id = light.Id,
+                        Name = light.Label
+
+                    });
+
+                    groups.Add(new Selector()
+                    {
+                        Id = light.Group.Id,
+                        Name = light.Group.Name
+                    });
                 }
+
+                groups = groups.Distinct().ToList();
 
             }
 
-            return Tuple.Create(lights_dict, groups_dict);
+            return Tuple.Create(lights, groups);
 
         }
 
@@ -195,6 +199,24 @@ namespace au.com.mullineaux.lifx.Classes
         {
             public string Id { get; set; }
             public string Name { get; set; }
+        }
+
+        public class Selector
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+
+            // public Selector(Light _light)
+            // {
+            //     this.Id = _light.Id;
+            //     this.Name = _light.Label;
+            // }
+            // public Selector(LightGroup _group)
+            // {
+            //     this.Id = _group.Id;
+            //     this.Name = _group.Name;
+
+            // }
         }
 
     }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static au.com.mullineaux.lifx.Classes.LIFXApi;
 
 namespace au.com.mullineaux.lifx
 {
@@ -20,9 +21,10 @@ namespace au.com.mullineaux.lifx
                 PluginSettings instance = new PluginSettings()
                 {
                     AuthToken = Properties.Settings.Default.AuthToken,
-                    AuthTokenIsValid = false,
-                    SelectorType = String.Empty,
-                    SelectorDict = null,
+                    AuthTokenIsValid = Properties.Settings.Default.AuthTokenIsValid,
+                    SelectorType = "single",
+                    SelectorList = null,
+                    Brightness = 100,
                     Color = "white"
                 };
 
@@ -41,8 +43,8 @@ namespace au.com.mullineaux.lifx
             [JsonProperty(PropertyName = "selectorType")]
             public string SelectorType { get; set; }
 
-            [JsonProperty(PropertyName = "selectorDict")]
-            public Dictionary<string, string> SelectorDict { get; set; }
+            [JsonProperty(PropertyName = "selectorList")]
+            public List<Selector> SelectorList { get; set; }
 
 
             [JsonProperty(PropertyName = "selector")]
@@ -53,7 +55,7 @@ namespace au.com.mullineaux.lifx
             public string Color { get; set; }
 
             [JsonProperty(PropertyName = "brightness")]
-            public double Brightness { get; set; } = 1.0;
+            public double Brightness { get; set; }
 
 
             [JsonProperty(PropertyName = "duration")]
@@ -79,7 +81,6 @@ namespace au.com.mullineaux.lifx
 
                 this.settings = PluginSettings.CreateDefaultSettings();
                 SaveSettings();
-                Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Initialized Token: {settings.AuthToken}");
             }
             else
             {
@@ -118,9 +119,9 @@ namespace au.com.mullineaux.lifx
                         var _authToken = (string)payload["authToken"];
                         Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token from PI: {_authToken}");
 
-                        settings.AuthTokenIsValid = await LIFXApi.ValidateAuthToken(_authToken);
-                        if (settings.AuthTokenIsValid == true)
+                        if (await LIFXApi.ValidateAuthToken(_authToken))
                         {
+                            settings.AuthTokenIsValid = true;
                             settings.AuthToken = _authToken;
                             Properties.Settings.Default.AuthToken = _authToken;
                             Properties.Settings.Default.Save();
@@ -141,16 +142,16 @@ namespace au.com.mullineaux.lifx
                         if (!String.IsNullOrEmpty(Properties.Settings.Default.AuthToken))
                         {
                             var selectors = await LIFXApi.GetSelectors(Properties.Settings.Default.AuthToken);
-                            settings.SelectorType = (string)payload["type"];
+                            settings.SelectorType = (string)payload["type"].ToString().ToLower();
 
-                            if (settings.SelectorType == "Single")
+                            if (settings.SelectorType == "single")
                             {
-                                settings.SelectorDict = selectors.Item1;
+                                settings.SelectorList = selectors.Item1;
 
                             }
                             else
                             {
-                                settings.SelectorDict = selectors.Item2;
+                                settings.SelectorList = selectors.Item2;
                             }
 
                             await SaveSettings();
@@ -203,8 +204,16 @@ namespace au.com.mullineaux.lifx
             {
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                string requestUri = $"https://api.lifx.com/v1/lights/{settings.Selector}/state";
-                string authToken = settings.AuthToken;
+                string selector;
+                if (settings.SelectorType == "group")
+                {
+                    selector = $"group_id:{settings.Selector}";
+                } else
+                {
+                    selector = settings.Selector;
+                }
+
+                string requestUri = $"https://api.lifx.com/v1/lights/{selector}/state";
 
                 var state = new Payload()
                 {
@@ -215,7 +224,7 @@ namespace au.com.mullineaux.lifx
                 var content = new StringContent(JsonConvert.SerializeObject(state), Encoding.UTF8, "application/json");
 
                 var request = new HttpRequestMessage(HttpMethod.Put, requestUri);
-                request.Headers.Add("Authorization", $"Bearer {settings.AuthToken}");
+                request.Headers.Add("Authorization", $"Bearer {Properties.Settings.Default.AuthToken}");
                 request.Content = content;
 
                 var response = await client.SendAsync(request);

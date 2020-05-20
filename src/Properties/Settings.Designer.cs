@@ -291,5 +291,17 @@ namespace au.com.mullineaux.lifx.Properties {
                 this["AuthToken"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AuthTokenIsValid {
+            get {
+                return ((bool)(this["AuthTokenIsValid"]));
+            }
+            set {
+                this["AuthTokenIsValid"] = value;
+            }
+        }
     }
 }

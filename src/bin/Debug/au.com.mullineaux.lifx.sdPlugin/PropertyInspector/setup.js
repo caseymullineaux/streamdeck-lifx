@@ -1,12 +1,12 @@
 ﻿var authWindow = null;
 
 document.addEventListener("websocketCreate", function () {
-    console.log("Websocket created!");
-    //getGlobalSettings();
-  console.log(actionInfo.payload.settings);
-  checkTokenIsValid(actionInfo.payload.settings);
+  console.log("Websocket created!");
+    checkToken(actionInfo.payload.settings);
+    updateAuthToken(actionInfo.payload.settings["authToken"])
+    
 
-  window.setTimeout(updatePeakLabel, 500);
+  window.setTimeout(updateBrightnessLabel, 500);
 
   websocket.addEventListener("message", function (event) {
     console.log("Got message event!");
@@ -14,63 +14,60 @@ document.addEventListener("websocketCreate", function () {
     // Received message from Stream Deck
     var jsonObj = JSON.parse(event.data);
 
-      if (jsonObj.event === "sendToPropertyInspector") {
-          var payload = jsonObj.payload;
-          checkTokenIsValid(payload);
-     
+    if (jsonObj.event === "sendToPropertyInspector") {
+      var payload = jsonObj.payload;
+      checkToken(payload.settings);
     } else if (jsonObj.event === "didReceiveSettings") {
       var payload = jsonObj.payload;
-      checkTokenIsValid(payload.settings);
+      checkToken(payload.settings);
     }
-    window.setTimeout(updatePeakLabel, 500);
+    window.setTimeout(updateBrightnessLabel, 500);
   });
 });
 
-
-
 document.addEventListener("settingsUpdated", function (event) {
   console.log("Got settingsUpdated event!");
-  window.setTimeout(updatePeakLabel, 500);
+  window.setTimeout(updateBrightnessLabel, 500);
 });
 
-function checkTokenIsValid(payload) {
+function checkToken(payload) {
   console.log("Validating access token ...");
-  console.log(payload);
-
+    console.log(payload);
   var authToken = document.getElementById("authToken");
-  console.log("Token: " + payload["authToken"]);
 
   authToken.value = payload["authToken"];
 
   if (payload["authTokenIsValid"]) {
-    setSettingsWrapper("");
-    var event = new Event("authTokenIsValid");
-    document.dispatchEvent(event);
+    setSettingsWrapper("none");
+    // var event = new Event("authTokenIsValid");
+    // document.dispatchEvent(event);
 
     if (authWindow) {
-      authWindow.loadSuccessView();
+        authWindow.loadSuccessView();
+        setSettingsWrapper("none");
     }
   } else {
-    setSettingsWrapper("none");
+    setSettingsWrapper("block");
 
     if (authWindow) {
       authWindow.loadFailedView();
     } else {
-        if (authToken.value == null) {
-            authWindow = window.open("setup/setup.html");
-        }
+      if (authToken.value == null) {
+        authWindow = window.open("setup/setup.html");
+      }
     }
   }
 }
 
 function setSettingsWrapper(displayValue) {
   var sdWrapper = document.getElementById("sdWrapper");
-  // sdWrapper.style.display = displayValue;
+  sdWrapper.style.display = displayValue;
 }
 
 function resetPlugin() {
   var payload = {};
-  payload.property_inspector = "resetPlugin";
+    payload.property_inspector = "resetPlugin";
+    setSettingsWrapper("block");
   sendPayloadToPlugin(payload);
   authWindow = window.open("setup/setup.html");
 }
@@ -87,13 +84,10 @@ function openLIFXLogin() {
 
 function updateAuthToken(val) {
   var authToken = val;
-  console.log("Received from input form: " + authToken);
 
   var payload = {};
   payload.property_inspector = "validateToken";
   payload.authToken = authToken;
-  console.log(payload);
-  //console.log("PAT:" + payload.authToken);
   sendPayloadToPlugin(payload);
   console.log("Updating access token");
 }

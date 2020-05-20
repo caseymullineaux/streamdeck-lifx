@@ -25,6 +25,10 @@
         />
       </div> -->
 
+        
+        <details class="message caution" id="sdWrapper">
+            <summary>Personal Access Token is invalid.</summary>
+        </details>
       <div class="sdpi-item" id="dvAuthToken">
         <div class="sdpi-item-label">Authentication Token</div>
         <button class="sdpi-item-value" onClick="resetPlugin()">Change</button>
@@ -45,9 +49,10 @@
               id="selectorSingle"
               class="sdProperty sdCheckbox"
               type="radio"
-              name="rdSelectorSingle"
+              name="rdSelector"
               checked="checked"
-              oninput="updateSelectors('single')"
+              value="single"
+              oninput="updateSelectors()"
             />
             <label for="selectorSingle" class="sdpi-item-label"
               ><span></span>Single</label
@@ -58,8 +63,9 @@
               id="selectorGroup"
               class="sdProperty sdCheckbox"
               type="radio"
-              name="rdSelectorGroup"
-              oninput="updateSelectors('group')"
+              name="rdSelector"
+              value="group"
+              oninput="updateSelectors()"
             />
             <label for="selectorGroup" class="sdpi-item-label"
               ><span></span>Group</label
@@ -72,10 +78,10 @@
         <div class="sdpi-item-label">Selector</div>
         <select
           class="sdpi-item-value select sdProperty sdList"
-          id="selectorDict"
+          id="selectorList"
           oninput="setSettings()"
-          sdListTextProperty="value"
-          sdListValueProperty="id"
+          sdListTextProperty="Name"
+          sdListValueProperty="Id"
           sdValueField="selector"
         ></select>
       </div>
