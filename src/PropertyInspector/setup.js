@@ -1,14 +1,12 @@
 ﻿var authWindow = null;
 
 document.addEventListener("websocketCreate", function () {
-  console.log("Websocket created!");
+  //console.log("Websocket created!");
     validateSetupProcess(actionInfo.payload.settings);
     //updateAuthToken(actionInfo.payload.settings["authToken"])
     
-
-
   websocket.addEventListener("message", function (event) {
-    console.log("Got message event!");
+    console.log("[setup.js] Got message event!");
 
     // Received message from Stream Deck
     var jsonObj = JSON.parse(event.data);
@@ -40,13 +38,11 @@ function validateSetupProcess(payload) {
   //if (payload["authTokenIsValid"]) {
     if (payload["authToken"]) {
         console.log("[setup.js] authToken has a value.");
-        console.log("[setup.js] " + payload["authToken"]);
         // var event = new Event("authTokenIsValid");
         // document.dispatchEvent(event);
 
         if (payload["authTokenIsValid"]) {
-            console.log("[setup.js] authTokenIsValue = True");
-            console.log("[setup.js] " + payload["authTokenIsValid"]);
+            console.log("[setup.js] authTokenIsValid = True");
             setSettingsWrapper("none");
 
             if (authWindow) {
@@ -61,7 +57,6 @@ function validateSetupProcess(payload) {
             // display the "invalid token" message in the PI
             console.log("[setup.js] authToken has a value but it is invalid.");
             console.log("[setup.js] authTokenIsValue = False");
-            console.log("[setup.js] " + payload["authTokenIsValid"]);
             setSettingsWrapper("block");
 
             if (authWindow) {

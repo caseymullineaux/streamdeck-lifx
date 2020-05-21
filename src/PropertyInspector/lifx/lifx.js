@@ -1,8 +1,24 @@
-﻿function validateToken() {
-    console.log("[lifx.js] Checking if the token is valid ...");
-    payload = actionInfo.payload.settings;
-    console.log(payload);
+﻿function updateSelectors() {
+    //document.getElementById("dvSelector").style.display = 'none';
 
+    //if (payload['selectorList']) {
+    //    document.getElementById("dvSelector").style.display = '';
+    //}
+
+    if (validateToken()) {
+        console.log("[life.js] Updating selectors ...")
+        var payload = {};
+        payload.property_inspector = "updateSelectors";
+        payload.type = document.querySelector('input[name="rdSelector"]:checked').value;
+        console.log("DEBUG: payload.type: " + payload.type);
+        sendPayloadToPlugin(payload);
+    }
+
+}
+
+function validateToken() {
+    console.log("[lifx.js] Checking if the token is valid ...");
+    var payload = actionInfo.payload.settings;
 
     if (!payload['authTokenIsValid']) {
         console.log("[lifx.js] Token is invalid.");
@@ -14,8 +30,16 @@
     return true;
 }
 
-function tokenInvalid() {
-    // TODO:
-    // - set the alert on the PI
-    // - set the alert icon on the buttons
+function updateSelectorRadio() {
+    console.log("[lifx.js] Updating the selector radio group ...");
+    var payload = actionInfo.payload.settings;
+    console.log(payload);
+
+    if (payload['selectorType'] === 'group') {
+        document.getElementById("selectorGroup").checked = true;
+    } else {
+        document.getElementById("selectorSingle").checked = true;
+    }
+
+   
 }

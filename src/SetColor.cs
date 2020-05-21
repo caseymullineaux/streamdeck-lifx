@@ -28,7 +28,6 @@ namespace au.com.mullineaux.lifx
                     Color = "white"
                 };
 
-
                 return instance;
             }
 
@@ -161,6 +160,7 @@ namespace au.com.mullineaux.lifx
                                 settings.SelectorList = selectors.Item2;
                             }
 
+                            
                             await SaveSettings();
                         }
                         break;
