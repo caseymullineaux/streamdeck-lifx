@@ -117,17 +117,24 @@ namespace au.com.mullineaux.lifx
                         // Validate the token
                         // settings.AuthTokenIsValid = false;
                         var _authToken = (string)payload["authToken"];
+                        Properties.Settings.Default.AuthToken = _authToken;
+
                         Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token from PI: {_authToken}");
+                        settings.AuthToken = _authToken;
 
                         if (await LIFXApi.ValidateAuthToken(_authToken))
                         {
                             settings.AuthTokenIsValid = true;
-                            settings.AuthToken = _authToken;
-                            Properties.Settings.Default.AuthToken = _authToken;
-                            Properties.Settings.Default.Save();
+                            Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token Valid: {_authToken}");
+                        } else
+                        {
+                            settings.AuthTokenIsValid = false;
+                            Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token Invalid: {_authToken}");
                         }
-                        Logger.Instance.LogMessage(TracingLevel.DEBUG, $"Token Valid: {Properties.Settings.Default.AuthToken}");
+                        
                         await SaveSettings();
+                        Properties.Settings.Default.Save();
+                        
                         break;
                     case "resetPlugin":
                         settings.AuthToken = String.Empty;

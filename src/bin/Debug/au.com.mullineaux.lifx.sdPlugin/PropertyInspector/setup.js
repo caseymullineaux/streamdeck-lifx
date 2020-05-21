@@ -2,11 +2,10 @@
 
 document.addEventListener("websocketCreate", function () {
   console.log("Websocket created!");
-    checkToken(actionInfo.payload.settings);
-    updateAuthToken(actionInfo.payload.settings["authToken"])
+    validateSetupProcess(actionInfo.payload.settings);
+    //updateAuthToken(actionInfo.payload.settings["authToken"])
     
 
-  window.setTimeout(updateBrightnessLabel, 500);
 
   websocket.addEventListener("message", function (event) {
     console.log("Got message event!");
@@ -16,47 +15,81 @@ document.addEventListener("websocketCreate", function () {
 
     if (jsonObj.event === "sendToPropertyInspector") {
       var payload = jsonObj.payload;
-      checkToken(payload.settings);
+      //showSetupDialog(payload.settings);
     } else if (jsonObj.event === "didReceiveSettings") {
       var payload = jsonObj.payload;
-      checkToken(payload.settings);
+      validateSetupProcess(payload.settings);
     }
-    window.setTimeout(updateBrightnessLabel, 500);
   });
 });
 
-document.addEventListener("settingsUpdated", function (event) {
-  console.log("Got settingsUpdated event!");
-  window.setTimeout(updateBrightnessLabel, 500);
-});
+//document.addEventListener("settingsUpdated", function (event) {
+//});
 
-function checkToken(payload) {
-  console.log("Validating access token ...");
-    console.log(payload);
-  var authToken = document.getElementById("authToken");
+function validateSetupProcess(payload) {
 
-  authToken.value = payload["authToken"];
+    // Check if a token has been set.
+    // If it is blank or null, run the setup process.
 
-  if (payload["authTokenIsValid"]) {
-    setSettingsWrapper("none");
-    // var event = new Event("authTokenIsValid");
-    // document.dispatchEvent(event);
+  console.log("[setup.js] Checking if an auth token has been set ...");
+   console.log(payload);
+  //var authToken = document.getElementById("authToken");
+  //authToken.value = payload["authToken"];
 
-    if (authWindow) {
-        authWindow.loadSuccessView();
-        setSettingsWrapper("none");
-    }
-  } else {
-    setSettingsWrapper("block");
 
-    if (authWindow) {
-      authWindow.loadFailedView();
+  //if (payload["authTokenIsValid"]) {
+    if (payload["authToken"]) {
+        console.log("[setup.js] authToken has a value.");
+        console.log("[setup.js] " + payload["authToken"]);
+        // var event = new Event("authTokenIsValid");
+        // document.dispatchEvent(event);
+
+        if (payload["authTokenIsValid"]) {
+            console.log("[setup.js] authTokenIsValue = True");
+            console.log("[setup.js] " + payload["authTokenIsValid"]);
+            setSettingsWrapper("none");
+
+            if (authWindow) {
+                authWindow.loadSuccessView();
+                setSettingsWrapper("none");
+                updateSelectors();
+            }
+
+        } else {
+
+            // if authWindow variable is not set
+            // display the "invalid token" message in the PI
+            console.log("[setup.js] authToken has a value but it is invalid.");
+            console.log("[setup.js] authTokenIsValue = False");
+            console.log("[setup.js] " + payload["authTokenIsValid"]);
+            setSettingsWrapper("block");
+
+            if (authWindow) {
+                authWindow.loadFailedView();
+            }
+            //else {
+            //    if (authToken.value == null) {
+            //        authWindow = window.open("setup/setup.html");
+            //    }
+            //}
+        }
     } else {
-      if (authToken.value == null) {
-        authWindow = window.open("setup/setup.html");
-      }
+        if (authWindow) {
+            // if the setup is in progress and
+            // a blank value for the token was submitted
+            console.log("[setup.js] setup is in progress, but a blank value for the token was submitted");
+
+            authWindow.loadFailedView();
+        } else {
+            console.log("[setup.js] authToken does NOT have a value");
+            console.log("[setup.js] " + payload["authToken"]);
+            authWindow = window.open("setup/setup.html");
+        }
     }
-  }
+}
+
+function showSetupDialog() {
+    authWindow = window.open("setup/setup.html");
 }
 
 function setSettingsWrapper(displayValue) {
@@ -104,3 +137,4 @@ function sendPayloadToPlugin(payload) {
     websocket.send(JSON.stringify(json));
   }
 }
+

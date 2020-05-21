@@ -3,6 +3,7 @@
   //checkSettings(actionInfo.payload.settings);
     window.setTimeout(updateBrightnessLabel, 500);
     updateSelectors();
+    
 
   websocket.addEventListener("message", function (event) {
     console.log("Got message event!");
@@ -14,7 +15,8 @@
         var payload = jsonObj.payload;
         updateSelectors();
     } else if (jsonObj.event === "didReceiveSettings") {
-      var payload = jsonObj.payload;
+        var payload = jsonObj.payload;
+        //updateSelectors();
     }
     window.setTimeout(updateBrightnessLabel, 500);
   });
@@ -44,9 +46,12 @@ function resetCounter() {
 }
 
 function updateSelectors() {
-    console.log("updateSelectors called")
-    var payload = {};
-    payload.property_inspector = "updateSelectors";
-    payload.type = document.querySelector('input[name="rdSelector"]:checked').value;
-    sendPayloadToPlugin(payload);
+    if (validateToken()) {
+        console.log("updateSelectors called")
+        var payload = {};
+        payload.property_inspector = "updateSelectors";
+        payload.type = document.querySelector('input[name="rdSelector"]:checked').value;
+        sendPayloadToPlugin(payload);
+    }
+    
 }

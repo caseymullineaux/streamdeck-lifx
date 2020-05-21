@@ -35,7 +35,7 @@ function loadLinkView() {
     localization["Linking"]["ApprovalCodeTitle"] +
     ":</div><input type='textarea' class='approvalCode' placeholder='" +
     localization["Linking"]["ApprovalPlaceholder"] +
-    "' value='' id='authToken'><br/>\
+    "' value='' id='authToken' required><br/>\
                                <p class='small leftAlign'>" +
     localization["Linking"]["NotePopup"] +
     "</p><br/><div class='button' id='submit'>" +

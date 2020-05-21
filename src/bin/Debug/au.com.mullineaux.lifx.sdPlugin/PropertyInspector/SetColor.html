@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="sdpi.css" />
     <script src="sdtools.common.js"></script>
     <script src="SetColor.js"></script>
+      <script src="lifx/lifx.js"></script>
     <script src="setup.js"></script>
+
   </head>
   <body>
     <div class="sdpi-wrapper">
@@ -31,7 +33,7 @@
         </details>
       <div class="sdpi-item" id="dvAuthToken">
         <div class="sdpi-item-label">Authentication Token</div>
-        <button class="sdpi-item-value" onClick="resetPlugin()">Change</button>
+        <button class="sdpi-item-value" onClick="showSetupDialog()">Change</button>
         <input
           class="sdpi-item-value sdProperty"
           value=""
